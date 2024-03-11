@@ -1,8 +1,11 @@
-module org.example.bullsandcows {
-    requires javafx.controls;
-    requires javafx.fxml;
+module BullsAndCows {
+  requires javafx.controls;
+  requires javafx.fxml;
+  requires org.jetbrains.annotations;
 
 
-    opens org.example.bullsandcows to javafx.fxml;
-    exports org.example.bullsandcows;
+  opens main to javafx.fxml;
+  exports main;
+
+
 }
