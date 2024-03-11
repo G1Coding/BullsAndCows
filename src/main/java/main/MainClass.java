@@ -19,6 +19,7 @@ public class MainClass extends Application {
 
   public static void main(String[] args) {
     launch();
+    System.out.printf("dsfsdf");
   }
 
 }
