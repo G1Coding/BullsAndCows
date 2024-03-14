@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controller">
+   <children>
+      <ImageView fitHeight="650.0" fitWidth="600.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/ingame.jpg" />
+         </image>
+      </ImageView>
+      <ScrollPane layoutX="623.0" layoutY="47.0" prefHeight="534.0" prefWidth="355.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="164.0" prefWidth="155.0" />
+        </content>
+      </ScrollPane>
+      <AnchorPane layoutX="58.0" layoutY="61.0" prefHeight="438.0" prefWidth="478.0">
+         <children>
+            <VBox layoutX="134.0" layoutY="370.0" prefHeight="52.0" prefWidth="211.0" spacing="30.0">
+               <children>
+                  <ToggleButton fx:id="sendNumBtn" mnemonicParsing="false" onAction="#sendNumBtnClicked" prefHeight="38.0" prefWidth="211.0" text="입력완료" />
+                  <ToggleButton fx:id="backBtn" mnemonicParsing="false" onAction="#moveBackPage" prefHeight="29.0" prefWidth="256.0" text="나가기" />
+               </children>
+            </VBox>
+            <HBox layoutX="12.0" layoutY="204.0" prefHeight="88.0" prefWidth="456.0" spacing="20.0">
+               <children>
+                  <TextField fx:id="num1" prefHeight="83.0" prefWidth="96.0" />
+                  <TextField fx:id="num2" prefHeight="83.0" prefWidth="96.0" />
+                  <TextField fx:id="num3" prefHeight="83.0" prefWidth="96.0" />
+                  <TextField fx:id="num4" prefHeight="83.0" prefWidth="96.0" />
+               </children>
+            </HBox>
+            <TextArea layoutX="68.0" layoutY="14.0" prefHeight="88.0" prefWidth="328.0" text="1부터 9사이의 숫자 4개를 입력하세요&#10;(중복 되는 수는 안됨)" />
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

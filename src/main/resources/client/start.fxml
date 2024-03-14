@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controller">
+   <children>
+      <ImageView fitHeight="650.0" fitWidth="1000.0" layoutX="-8.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/start.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="90.0" fitWidth="182.0" layoutX="7.0" layoutY="8.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/image.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="371.0" fitWidth="287.0" layoutX="7.0" layoutY="233.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/startman.png" />
+         </image>
+      </ImageView>
+      <GridPane layoutX="290.0" layoutY="318.0" prefHeight="191.0" prefWidth="294.0">
+         <children>
+            <Label text="아이디">
+               <font>
+                  <Font size="12.0" />
+               </font></Label>
+            <Label prefHeight="19.0" prefWidth="104.0" text="비밀번호" GridPane.rowIndex="1">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <ToggleButton fx:id="registerBtn" mnemonicParsing="false" onAction="#moveRegister" prefHeight="31.0" prefWidth="287.0" text="회원가입" GridPane.columnSpan="2147483647" GridPane.rowIndex="3" />
+            <ToggleButton fx:id="resetBtn" mnemonicParsing="false" onAction="#moveResetPage" prefHeight="31.0" prefWidth="287.0" text="아이디 / 비밀번호 찾기" GridPane.columnSpan="2147483647" GridPane.rowIndex="2" />
+            <TextField fx:id="txtId" onAction="#loginBtnClicked" prefHeight="29.0" prefWidth="29.0" promptText="아이디를 입력하세요" GridPane.columnIndex="1" />
+            <PasswordField fx:id="txtPassword" onAction="#loginBtnClicked" promptText="비밀번호를 입력하세요" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         </children>
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="156.0" minWidth="10.0" prefWidth="94.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="208.0" minWidth="10.0" prefWidth="201.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+      </GridPane>
+      <ToggleButton fx:id="loginBtn" layoutX="670.0" layoutY="407.0" mnemonicParsing="false" onAction="#loginBtnClicked" prefHeight="62.0" prefWidth="106.0" text="LOGIN" />
+      <Text layoutX="277.0" layoutY="206.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bulls And Cows">
+         <font>
+            <Font size="60.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

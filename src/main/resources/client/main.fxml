@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controller">
+   <children>
+      <ImageView fitHeight="650.0" fitWidth="600.0" pickOnBounds="true">
+         <image>
+            <Image url="@../images/main.jpg" />
+         </image>
+      </ImageView>
+      <ToggleButton fx:id="startBtn" layoutX="118.0" layoutY="461.0" mnemonicParsing="false" onAction="#moveIngamePage" prefHeight="74.0" prefWidth="314.0" text="게임 시작" />
+      <ImageView fitHeight="232.0" fitWidth="224.0" layoutX="163.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/mainIcon.png" />
+         </image>
+      </ImageView>
+      <TextArea layoutX="129.0" layoutY="124.0" prefHeight="33.0" prefWidth="270.0" text="1~9까지의 숫자 4개를 입력하세요." />
+      <Text layoutX="191.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="숫자 야구">
+         <font>
+            <Font size="34.0" />
+         </font>
+      </Text>
+      <ScrollPane layoutX="549.0" prefHeight="650.0" prefWidth="451.0">
+         <content>
+            <TextField prefHeight="562.0" prefWidth="405.0" />
+         </content></ScrollPane>
+   </children>
+</AnchorPane>
