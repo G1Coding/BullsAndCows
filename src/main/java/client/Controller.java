@@ -11,7 +11,9 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDate;
@@ -82,6 +84,7 @@ public class Controller implements Initializable {
   @FXML
   private TextField num4;
 
+  @FXML Label serverResponse;
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -494,8 +497,7 @@ public class Controller implements Initializable {
 
 
   @FXML
-
-  public void moveIngamePage(ActionEvent evdent) throws IOException {
+  public void moveIngamePage(ActionEvent event) throws IOException {
 
     System.out.println("★★★★★★게임 시작★★★★★★★");
 //    boolean startButtonSelected = startBtn.isSelected();
@@ -506,27 +508,41 @@ public class Controller implements Initializable {
     String signResult = InGame.startGame(startSign, sock);
 
     if (signResult.equals("게임시작")) {
-      AlertClass.showAlert("게임시작", "게임을 시작합니다");
+     // AlertClass.showAlert("게임시작", "게임을 시작합니다");
+
+      // 새 스테이지 추가
+      Stage newStage = new Stage();
+      Stage stage = (Stage) startBtn.getScene().getWindow();
+
+      try {
+        // 기존 스테이지 + 새 레이아웃
+        /* 새로만든 레이아웃을 기존 스테이지에 띄움 */
+        Parent second = FXMLLoader.load(getClass().getResource("ingame.fxml"));
+
+        // 씬에 레이아웃 추가
+        Scene sc = new Scene(second);
+        stage.setScene(sc);
+        stage.show();
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     } else {
-      AlertClass.showAlert("게임시작", "상대방을 찾는 중");
+
+//     while(true){
+//       InputStream inputStream = sock.getInputStream();
+//
+//       DataInputStream dataInputStream = new DataInputStream(inputStream);
+//
+//
+//       String signResult2 = dataInputStream.readUTF();
+//
+//
+//       serverResponse.setText(signResult2);
+//     }
+
+    }
+//      AlertClass.showAlert("게임시작", "상대방을 찾는 중");
     }
 
-    // 새 스테이지 추가
-    Stage newStage = new Stage();
-    Stage stage = (Stage) startBtn.getScene().getWindow();
-
-    try {
-      // 기존 스테이지 + 새 레이아웃
-      /* 새로만든 레이아웃을 기존 스테이지에 띄움 */
-      Parent second = FXMLLoader.load(getClass().getResource("ingame.fxml"));
-
-      // 씬에 레이아웃 추가
-      Scene sc = new Scene(second);
-      stage.setScene(sc);
-      stage.show();
-
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
   }
-}

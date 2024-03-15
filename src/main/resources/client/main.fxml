@@ -8,7 +8,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"  fx:controller="client.Controller" >
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controller">
    <children>
       <ImageView fitHeight="650.0" fitWidth="600.0" pickOnBounds="true">
          <image>
@@ -29,7 +29,7 @@
       </Text>
       <ScrollPane layoutX="549.0" prefHeight="650.0" prefWidth="451.0">
          <content>
-            <TextField prefHeight="562.0" prefWidth="405.0" />
+            <Label fx:id="serverResponse" prefHeight="216.0" prefWidth="352.0" text="시작상태체크" />
          </content></ScrollPane>
    </children>
 </AnchorPane>
