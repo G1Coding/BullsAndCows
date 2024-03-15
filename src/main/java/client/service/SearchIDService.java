@@ -46,13 +46,11 @@ public class SearchIDService {
       //확인
       System.out.printf("인증 결과 = " + resultMsg);
 
-
       if (!resultMsg.equals("x")) {
         return resultMsg;
       }else {
         return "없음";
       }
-
 
       // return isAuthenticated; (테스트 전: 서버로부터 받아야할 값)
     } catch (IOException e) {
@@ -61,15 +59,3 @@ public class SearchIDService {
     return resultMsg;
   }
 }
-
-
-
-    // 서버 응답에 따라 알림 창 표시
-//    if (isUserIdFound) {
-//      // 아이디를 찾은 경우
-//      AlertClass.showAlertInfo("아이디 찾기", "사용자의 아이디는 XXXX입니다.");
-//    } else {
-//      // 일치하는 회원 정보가 없는 경우
-//      AlertClass.showAlert("아이디 찾기", "일치하는 회원 정보가 없습니다.");
-//    }
-//  }

@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static client.MainClass.sock;
+
 public class Controller implements Initializable {
   private final LoginService loginService = new LoginService();
   private final RegisterService registerService = new RegisterService();
@@ -190,7 +192,7 @@ public class Controller implements Initializable {
       } catch (IOException e) {
         e.printStackTrace();
       }
-    } else{
+    } else {
       AlertClass.showAlert("회원가입 실패", "닉네임과 아이디 중복 체크 해주세요");
 
     }
@@ -245,7 +247,6 @@ public class Controller implements Initializable {
   }
 
 
-
   //★★★★★★ID 찾기★★★★★★★
   @FXML
   public void searchIdBtnClicked(ActionEvent event) {
@@ -257,7 +258,7 @@ public class Controller implements Initializable {
       LocalDate birthDay = userBirthForSearchId.getValue();
 
       // 입력값 유효성 검사
-      if (userName.isEmpty() || birthDay ==null) {
+      if (userName.isEmpty() || birthDay == null) {
         AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
         return;
       }
@@ -273,9 +274,9 @@ public class Controller implements Initializable {
       // 아이디 찾기 서비스 호출하여 아이디 찾기 수행
       String result = searchIDService.searchId(searchingId, sock);
 
-      if (result.equals("없음") ) {
+      if (result.equals("없음")) {
         AlertClass.showAlert("아이디 찾기 실패", "일치하는 회원 정보가 없습니다.");
-      }else {
+      } else {
         AlertClass.showAlert("아이디 찾기 성공", "회원님의 아이디는 " + result + " 입니다.");
       }
     }
@@ -309,7 +310,7 @@ public class Controller implements Initializable {
       System.out.print(resetPwd);
 
       Socket sock = MainClass.sock;
-      boolean isUser =  resetPwdService.resetPassword(resetPwd, sock);
+      boolean isUser = resetPwdService.resetPassword(resetPwd, sock);
 
       //응답
       if (isUser) {
@@ -328,7 +329,7 @@ public class Controller implements Initializable {
         //응답
         if (isresettingPwd) {
           System.out.printf("비밀번호 초기화 성공!");
-         // moveStartPage(); // 로그인 성공 시 다음 페이지로 이동
+          // moveStartPage(); // 로그인 성공 시 다음 페이지로 이동
         } else {
           AlertClass.showAlert("초기화 실패", "초기화에 실패했습니다.");
         }
@@ -342,7 +343,7 @@ public class Controller implements Initializable {
 
 
   public static String resetPasswordProcess(String userId) {
-  // 새로운 비밀번호를 입력받습니다. 이 부분은 사용자 입력을 받는 화면을 구현하셔야 합니다.
+    // 새로운 비밀번호를 입력받습니다. 이 부분은 사용자 입력을 받는 화면을 구현하셔야 합니다.
     TextInputDialog dialog = new TextInputDialog();
     dialog.setTitle("비밀번호 초기화");
     dialog.setHeaderText(null);
@@ -359,7 +360,6 @@ public class Controller implements Initializable {
       return null; // 사용자가 취소한 경우 null 반환
     }
   }
-
 
 
   @FXML
@@ -492,7 +492,25 @@ public class Controller implements Initializable {
 
   }
 
-  public void moveIngamePage() {
+
+  @FXML
+
+  public void moveIngamePage(ActionEvent evdent) throws IOException {
+
+    System.out.println("★★★★★★게임 시작★★★★★★★");
+//    boolean startButtonSelected = startBtn.isSelected();
+//    if (startButtonSelected) {
+    ArrayList<String> startSign = new ArrayList<>();
+    startSign.add("게임시작");
+
+    String signResult = InGame.startGame(startSign, sock);
+
+    if (signResult.equals("게임시작")) {
+      AlertClass.showAlert("게임시작", "게임을 시작합니다");
+    } else {
+      AlertClass.showAlert("게임시작", "상대방을 찾는 중");
+    }
+
     // 새 스테이지 추가
     Stage newStage = new Stage();
     Stage stage = (Stage) startBtn.getScene().getWindow();
