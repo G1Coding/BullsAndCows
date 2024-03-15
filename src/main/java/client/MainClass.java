@@ -16,7 +16,12 @@ public class MainClass extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
+    Socket sock = new Socket("192.168.0.23", 7979);
+
     FXMLLoader fxmlLoader = new FXMLLoader(client.Controller.class.getResource("start.fxml"));
+    Controller controller = new Controller(sock);
+    fxmlLoader.setController(controller);
+
 
     Parent root = fxmlLoader.load();
     Scene scene = new Scene(root, 1000, 650);

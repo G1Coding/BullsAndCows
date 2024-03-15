@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.util.converter.IntegerStringConverter;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,6 +23,13 @@ public class Controller implements Initializable {
   private final RegisterService registerService = new RegisterService();
   private final ResetPwdService resetPwdService = new ResetPwdService();
   private final SearchIDService searchIDService = new SearchIDService();
+
+
+  private Socket sock;
+  // 생성자를 통해 소켓 전달
+  public Controller(Socket sock) {
+    this.sock = sock;
+  }
 
 
   @FXML
@@ -100,7 +108,7 @@ public class Controller implements Initializable {
     System.out.print(loginData);
 
     // 로그인 서비스 호출하여 인증 수행
-    boolean isAuthenticated = loginService.authenticateUser(loginData);
+    boolean isAuthenticated = loginService.authenticateUser(loginData, sock);
 
     //응답
     if (isAuthenticated) {
