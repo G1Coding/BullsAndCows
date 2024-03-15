@@ -1,5 +1,6 @@
 package server.thread;
 
+import server.DAO.ServerDAO;
 import server.ServerMain;
 
 import java.io.DataOutputStream;
@@ -21,6 +22,7 @@ public class TurnThread extends Thread{
     public void run() {
         gameStatus = true;
         while(true){
+
             try {
                 turn = 1;
                 System.out.println("1설정");
@@ -28,9 +30,17 @@ public class TurnThread extends Thread{
                     this.user = user;
                     out = user.getOutputStream();
                     dos = new DataOutputStream(out);
-                    dos.writeUTF(turn + "님 차례");
+                    String user1ip = users.get(0).getInetAddress().toString().replaceAll("/", "");
+                    ServerDAO dao = new ServerDAO();
+                    String user1 = dao.getInetAddress(user1ip);
+                    dos.writeUTF( user1 + "님 차례");
                 }
-                Thread.sleep(30000);
+                for(int i=1; i<=30; i++){
+                    if(turn == 2){
+                        break;
+                    }
+                    Thread.sleep(1000);
+                }
 
                 turn = 2;
                 System.out.println("2설정");
@@ -38,14 +48,22 @@ public class TurnThread extends Thread{
                     this.user = user;
                     out = user.getOutputStream();
                     dos = new DataOutputStream(out);
-                    dos.writeUTF(turn + "님 차례");
+                    String user2ip = users.get(1).getInetAddress().toString().replaceAll("/", "");
+                    ServerDAO dao = new ServerDAO();
+                    String user2 = dao.getInetAddress(user2ip);
+                    dos.writeUTF( user2 + "님 차례");
                 }
-                Thread.sleep(30000);
+
+                for(int i=1; i<=30; i++){
+                    if(turn == 1){
+                        break;
+                    }
+                    Thread.sleep(1000);
+                }
+
             }catch (Exception e){
-                users.remove(user);
-                for(Socket user : users){
-                    System.out.println(user);
-                }
+                e.printStackTrace();
+                System.out.println("TurnThread 에서 문제 발생");
             }
         }
     }

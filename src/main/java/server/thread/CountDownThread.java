@@ -24,7 +24,6 @@ public class CountDownThread extends Thread{
                 }
 
                 dos.writeUTF("!!! 게임 시작 !!!");
-                dos.close(); os.close();
             }catch(Exception e){
                 e.printStackTrace();
             }

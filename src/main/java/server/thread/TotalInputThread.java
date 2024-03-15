@@ -26,11 +26,16 @@ public class TotalInputThread extends Thread{
     public void run() {
 
         try{
-            InputStream inputStream = user.getInputStream();
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+
             while(true){
+                InputStream inputStream = user.getInputStream();
+                ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
                 // 데이터의 형식을 판별하여 처리
                 Object data = objectInputStream.readObject();
+
+                // @@@@@@@@@@@@@@@@@@@@@@@@@@@@ test 용 데이터 출력 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                System.out.println(data);
+
                 Object firstElemnt = ((ArrayList<?>)data).get(0);
 
                 // ArrayList 일 경우
@@ -52,12 +57,15 @@ public class TotalInputThread extends Thread{
                         // DB 에 넘겨 받은 내용 저장
                         service.saveReceiveResult(receiveNum, strikeBallOut, userName, tryTurn);
 
-                        // 전달 받은 객체를 다시 전송하기 위해 ObjectInputStream 종료
-                        objectInputStream.close();
-                        inputStream.close();
-
                         // 다시 클라이언트에게 n번째 도전, 닉네임, 도전한 수(xxxx), 스트라이크, 볼, 아웃 을 전송
                         service.sendResult(tryTurn, userName, receiveNum, strikeBallOut);
+
+                        // 턴을 상대 턴으로 조정
+                        if(turn == 1){
+                            turn = 2;
+                        } else if (turn == 2) {
+                            turn = 1;
+                        }
                     }
                 } else if (firstElemnt instanceof  String) {
                     LoginRegisterFindResetService service = new LoginRegisterFindResetService();
@@ -70,12 +78,18 @@ public class TotalInputThread extends Thread{
                     } else if (option.equals("회원가입")) {
                         service.register(loginRegisterFindReset, user);
                     } else if (option.equals("찾기")) {
-                        service.login(loginRegisterFindReset, user);
+                        service.findId(loginRegisterFindReset, user);
                     } else if (option.equals("초기화")) {
-
+                        service.reset(loginRegisterFindReset, user);
+                    } else if (option.equals("닉네임")){
+                        service.chkName(loginRegisterFindReset, user);
+                    } else if (option.equals("아이디")){
+                        service.chkId(loginRegisterFindReset, user);
+                    } else if (option.equals("비밀번호초기화")) {
+                        service.resetPwd(loginRegisterFindReset, user);
+                    } else if (option.equals("게임시작")){
+                        WaitingThread waitingThread = new WaitingThread();
                     }
-
-                    System.out.println("문자열을 가진 객체 넘어옴");
                 }
             }
         }catch (EOFException e){

@@ -95,7 +95,6 @@ public class MainService {
             for(Socket user : users) {
                 ObjectOutputStream oos = new ObjectOutputStream(user.getOutputStream());
                 oos.writeObject(sendResultDTO);
-                oos.close();
             }
             System.out.println("MainService - sendResult 메소드에서 결과 정보 담긴 객체 전송 완료");
         } catch (Exception e) {

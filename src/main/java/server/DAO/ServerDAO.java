@@ -12,16 +12,12 @@ public class ServerDAO {
 
     public ServerDAO() {
         try {
-            System.out.println("드라이버 연동 전");
             Class.forName("oracle.jdbc.OracleDriver");
-            System.out.println("드라이버 호출 성공");
             String url = "jdbc:oracle:thin:@bullsandcows.cjykwegay094.us-east-1.rds.amazonaws.com:1521:orcl";
             String id = "admin";
             String pwd = "12345678";
             con = DriverManager.getConnection(url, id, pwd);
-            System.out.println("DB 접속 성공");
         }catch(Exception e){
-            System.out.println("DB 연동 오류");
             e.printStackTrace();
         }
     }
@@ -79,13 +75,18 @@ public class ServerDAO {
 
     public int register(String name, String birth, String id, String pwd, String ip){
         String sql = "INSERT INTO MEMBER VALUES (?,?,?,?,?)";
+
+        // 아이디, 닉네임의 중복 값이 있다면
+        if(chkId(id)==1 || chkName(name)==1){
+            return 0;
+        }
         try {
             ps = con.prepareStatement(sql);
-            ps.setString(1,name);
-            ps.setString(2,birth);
-            ps.setString(3,id);
-            ps.setString(4,pwd);
-            ps.setString(5,ip);
+            ps.setString(1,id);
+            ps.setString(2,name);
+            ps.setString(3,pwd);
+            ps.setString(4,birth);
+            ps.setString(5,ip.replaceAll("/", ""));
             int result = ps.executeUpdate();
             return result;
         } catch (Exception e) {
@@ -95,19 +96,104 @@ public class ServerDAO {
         }
     }
 
-    public int reset(String id, String name, String pwd){
-        String sql = "SELECT COUNT(*) FROM MEMBER WHERE id=? AND birth=? AND pwd=?";
+    public int reset(String id, String name, String birth){
+        String sql = "SELECT COUNT(*) FROM MEMBER WHERE id=? AND name=? AND birth=?";
         try {
             ps = con.prepareStatement(sql);
             ps.setString(1,id);
             ps.setString(2,name);
-            ps.setString(3,pwd);
+            ps.setString(3,birth);
             rs = ps.executeQuery();
             rs.next();
             return rs.getInt(1);
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("ServerDAO 클래스의 reset 메소드에서 문제 발생");
+            return 0;
+        }
+    }
+
+    public String getInetAddress(String ip){
+        String sql = "SELECT name FROM member WHERE ip=?";
+        String userName=null;
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, ip.replaceAll("/", ""));
+            rs = ps.executeQuery();
+            if(rs.next()){
+                userName = rs.getString("name");
+                return userName;
+            }
+            return userName;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ServerDAO 클래스의 reset 메소드에서 문제 발생");
+            return userName;
+        }
+    }
+
+    public int chkName(String name){
+        String sql = "SELECT COUNT(*) FROM MEMBER WHERE name=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1,name);
+            rs = ps.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ServerDAO 클래스의 chkName 메소드에서 문제 발생");
+            return 0;
+        }
+    }
+
+    public int chkId(String id){
+        String sql = "SELECT COUNT(*) FROM MEMBER WHERE id=?";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1,id);
+            rs = ps.executeQuery();
+            rs.next();
+            return rs.getInt(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ServerDAO 클래스의 chkId 메소드에서 문제 발생");
+            return 0;
+        }
+    }
+
+    public String findId(String name, String birth){
+        String sql = "SELECT id FROM member WHERE name=? AND birth=?";
+        String userId="x";
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1, name);
+            ps.setString(2, birth);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                userId = rs.getString("id");
+                return userId;
+            }
+            return userId;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ServerDAO 클래스의 findId 메소드에서 문제 발생");
+            return userId;
+        }
+    }
+
+    public int resetPwd(String id, String pwd){
+        String sql = "UPDATE MEMBER SET pwd=? WHERE id=?";
+        int result = 0;
+        try {
+            ps = con.prepareStatement(sql);
+            ps.setString(1,pwd);
+            ps.setString(2,id);
+            result = ps.executeUpdate();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("ServerDAO 클래스의 chkId 메소드에서 문제 발생");
             return 0;
         }
     }
