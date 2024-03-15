@@ -89,7 +89,7 @@ public class TotalInputThread extends Thread{
                         service.resetPwd(loginRegisterFindReset, user);
                     } else if (option.equals("게임시작")){
                         gameStatus.add("게임시작");
-                        WaitingThread waitingThread = new WaitingThread();
+                        WaitingThread waitingThread = new WaitingThread(user);
                     }
                 }
             }

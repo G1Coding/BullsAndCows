@@ -22,6 +22,7 @@ public class ServerMain {
         ServerSocket server = new ServerSocket(7979);
 
         while(true){
+
             // 소켓으로 접속한 유저의 정보를 user 변수로 저장
             Socket user = server.accept();
 
@@ -51,9 +52,6 @@ public class ServerMain {
         /* 2 명이 접속한 상태, 게임 시작 전 카운트 다운 */
         CountDownThread countUser1 = new CountDownThread((Socket)users.get(0));
         CountDownThread countUser2 = new CountDownThread((Socket)users.get(1));
-        System.out.println(countUser2);
-        System.out.println(countUser1);
-        System.out.println("유저별 소켓 생성 완료");
         countUser1.start();
         countUser2.start();
 
