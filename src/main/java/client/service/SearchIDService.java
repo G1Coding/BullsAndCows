@@ -1,37 +1,75 @@
 package client.service;
 
 import client.AlertClass;
+import client.MainClass;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class SearchIDService {
 
   // 아이디 찾기 서비스를 수행하는 메서드
-  public void searchId(String userName, LocalDate birthDay) {
-//    // 입력값 유효성 검사
-//    if (userName.isEmpty() || birthDay == null) {
-//      AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
-//      return;
-//    }
-
+  public static String searchId(ArrayList<String> searchingId, Socket sock) {
     // 서버 응답에 따라 아이디를 찾았는지 확인
-    boolean isUserIdFound = isUserIdFoundInServer(userName, birthDay);
 
-    // 서버 응답에 따라 알림 창 표시
-    if (isUserIdFound) {
-      // 아이디를 찾은 경우
-      AlertClass.showAlertInfo("아이디 찾기", "사용자의 아이디는 XXXX입니다.");
-    } else {
-      // 일치하는 회원 정보가 없는 경우
-      AlertClass.showAlert("아이디 찾기", "일치하는 회원 정보가 없습니다.");
+    String resultMsg = "1";
+    try {
+      //  Socket sock = new Socket("19s2.168.0.23", 7979);
+
+      // 데이터를 주고받을 스트림 생성
+      DataOutputStream outputStream = new DataOutputStream(sock.getOutputStream());
+      DataInputStream inputStream = new DataInputStream(sock.getInputStream());
+      // ArrayList를 서버로 전송
+      ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+      objectOutputStream.writeObject(searchingId);
+      System.out.print(searchingId);
+      objectOutputStream.flush();
+
+      if (MainClass.sock.isClosed()) {
+        System.out.println("소켓이 닫혔습니다.");
+      } else if (MainClass.sock.isConnected()) {
+        System.out.println("소켓이 닫히지 않았고 연결되어 있습니다.");
+
+      }
+
+      System.out.printf("소켓 보내기 완료");
+
+
+      // 서버로부터 인증 결과를 받음(아직 테스트 전)
+      resultMsg = inputStream.readUTF();
+
+      //확인
+      System.out.printf("인증 결과 = " + resultMsg);
+
+
+      if (!resultMsg.equals("x")) {
+        return resultMsg;
+      }else {
+        return "없음";
+      }
+
+
+      // return isAuthenticated; (테스트 전: 서버로부터 받아야할 값)
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-  }
-
-  // 서버 응답에 따라 아이디를 찾았는지 여부를 확인하는 메서드
-  private boolean isUserIdFoundInServer(String userName, LocalDate birthDay) {
-    // 여기에 서버와 통신하여 아이디를 찾는 로직을 구현합니다.
-    // 실제로는 서버와의 통신을 통해 사용자를 조회하고 아이디를 찾아야 합니다.
-    // 여기에서는 임시로 true를 반환하여 테스트합니다.
-    return true;
+    return resultMsg;
   }
 }
+
+
+
+    // 서버 응답에 따라 알림 창 표시
+//    if (isUserIdFound) {
+//      // 아이디를 찾은 경우
+//      AlertClass.showAlertInfo("아이디 찾기", "사용자의 아이디는 XXXX입니다.");
+//    } else {
+//      // 일치하는 회원 정보가 없는 경우
+//      AlertClass.showAlert("아이디 찾기", "일치하는 회원 정보가 없습니다.");
+//    }
+//  }

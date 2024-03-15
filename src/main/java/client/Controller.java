@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
@@ -23,13 +24,15 @@ public class Controller implements Initializable {
   private final RegisterService registerService = new RegisterService();
   private final ResetPwdService resetPwdService = new ResetPwdService();
   private final SearchIDService searchIDService = new SearchIDService();
-
-
-  private Socket sock;
-  // 생성자를 통해 소켓 전달
-  public Controller(Socket sock) {
-    this.sock = sock;
-  }
+//  public Controller() {
+//    // 기본 생성자 내용 추가 (필요한 경우)
+//  }
+//
+//  //private Socket sock;
+//  // 생성자를 통해 소켓 전달
+//  public Controller(Socket sock) {
+//    this.sock = sock;
+//  }
 
 
   @FXML
@@ -85,8 +88,9 @@ public class Controller implements Initializable {
 
   //★★★★★★로그인 시작★★★★★★★
   @FXML
-  public void loginBtnClicked(ActionEvent event) {
+  public void loginBtnClicked(ActionEvent event) throws IOException {
     System.out.println("★★★★★★로그인 시작★★★★★★★");
+
     String userId = txtId.getText();
     String password = txtPassword.getText();
 
@@ -107,11 +111,14 @@ public class Controller implements Initializable {
 
     System.out.print(loginData);
 
+    Socket sock = MainClass.sock;
+
     // 로그인 서비스 호출하여 인증 수행
     boolean isAuthenticated = loginService.authenticateUser(loginData, sock);
 
     //응답
     if (isAuthenticated) {
+      System.out.printf("로그인 성공!!!");
       moveStartPage(); // 로그인 성공 시 다음 페이지로 이동
     } else {
       AlertClass.showAlert("로그인 실패", "아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -123,98 +130,154 @@ public class Controller implements Initializable {
   @FXML
   public void registerBtnCliked(ActionEvent event) {
     System.out.println("★★★★★★회원가입12★★★★★★★");
+    String userName = txtName.getText();
+    String userId = txtId.getText();
+    String password = txtPassword.getText();
+    String passwordRe = txtRePassword.getText();
+    LocalDate birthDay = userBirth.getValue();
 
-    boolean registerEndBtnSelected = registerEndBtn.isSelected();
+    //입력값 유효성 검사
+    if (userName.isEmpty() || userId.isEmpty() || password.isEmpty() || passwordRe.isEmpty() || birthDay == null) {
+      AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
+      return;
+    }
+    System.out.println("사용자 이름: " + userName);
+    System.out.println("사용자 아이디: " + userId);
+    System.out.println("비밀번호: " + password);
+    System.out.println("비밀번호 확인: " + passwordRe);
+    System.out.println("사용자 생일: " + birthDay);
+    System.out.println("사용자 생일: " + String.valueOf(birthDay));
 
-    if (registerEndBtnSelected) {
 
-      String userName = txtName.getText();
-      String userId = txtId.getText();
-      String password = txtPassword.getText();
-      String passwordRe = txtRePassword.getText();
-      LocalDate birthDay = userBirth.getValue();
+    // 로그인 정보를 담는 ArrayList 생성 (전송)
+    ArrayList<String> registerData = new ArrayList<>();
+    registerData.add("회원가입"); // Status
+    registerData.add(userName);
+    registerData.add(String.valueOf(birthDay));
+    registerData.add(userId);
+    registerData.add(password);
 
-      //입력값 유효성 검사
-      if (userName.isEmpty() || userId.isEmpty() || password.isEmpty() || passwordRe.isEmpty() || birthDay == null) {
-        AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
-        return;
+    System.out.print(registerData);
+
+    Socket sock = MainClass.sock;
+    // 회원가입 서비스 호출하여 인증 수행
+    boolean isRegistered = registerService.registerUser(registerData, sock);
+
+    ArrayList<String> registerName = new ArrayList<>();
+    registerName.add("닉네임");
+    registerName.add(userName);
+
+
+    //비밀번호 일치 여부 확인
+    if (!password.equals(passwordRe)) {
+      AlertClass.showAlert("비밀번호 확인", "비밀번호가 일치하지 않습니다.");
+      return;
+    }
+
+    if (isRegistered) {
+      AlertClass.showAlert("회원가입 완료", "회원가입이 완료되었습니다.");
+      try {
+        // 현재 스테이지 가져오기 (회원가입 창)
+        Stage stage = (Stage) registerEndBtn.getScene().getWindow();
+
+        // 메인 화면으로 전환할 FXML 파일 로드
+        Parent mainSceneRoot = FXMLLoader.load(getClass().getResource("start.fxml"));
+        Scene mainScene = new Scene(mainSceneRoot);
+
+        // 스테이지에 새로운 씬 설정하여 메인 화면 표시
+        stage.setScene(mainScene);
+        stage.show();
+      } catch (IOException e) {
+        e.printStackTrace();
       }
-      System.out.println("사용자 이름: " + userName);
-      System.out.println("사용자 아이디: " + userId);
-      System.out.println("비밀번호: " + password);
-      System.out.println("비밀번호 확인: " + passwordRe);
-      System.out.println("사용자 생일: " + birthDay);
+    } else{
+      AlertClass.showAlert("회원가입 실패", "닉네임과 아이디 중복 체크 해주세요");
 
-      // 회원가입 서비스 호출하여 회원가입 수행
-      boolean isRegistered = registerService.registerUser(userName, userId, password, passwordRe, birthDay);
-
-      //비밀번호 일치 여부 확인
-      if (!password.equals(passwordRe)) {
-        AlertClass.showAlert("비밀번호 확인", "비밀번호가 일치하지 않습니다.");
-        return;
-      }
-
-      if (isRegistered) {
-        AlertClass.showAlert("회원가입 완료", "회원가입이 완료되었습니다.");
-        try {
-          // 현재 스테이지 가져오기 (회원가입 창)
-          Stage stage = (Stage) registerEndBtn.getScene().getWindow();
-
-          // 메인 화면으로 전환할 FXML 파일 로드
-          Parent mainSceneRoot = FXMLLoader.load(getClass().getResource("start.fxml"));
-          Scene mainScene = new Scene(mainSceneRoot);
-
-          // 스테이지에 새로운 씬 설정하여 메인 화면 표시
-          stage.setScene(mainScene);
-          stage.show();
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
     }
   }
+
 
   // 아이디 중복 확인 이벤트 핸들러
   @FXML
   public void isIdUsing(ActionEvent event) {
+
     String userId = txtId.getText();
-    boolean isAvailable = isIdUsing(userId);
-    if (isAvailable) {
-      AlertClass.showAlert("아이디 중복 확인", "사용 가능한 아이디입니다.");
+
+    ArrayList<String> registerID = new ArrayList<>();
+    registerID.add("아이디");
+    registerID.add(userId);
+
+    System.out.print(registerID);
+
+    Socket sock = MainClass.sock;
+
+    boolean isIdDuplication = registerService.registerCheckID(registerID, sock);
+    if (isIdDuplication) {
+      AlertClass.showAlert("아이디 중복 확인", "이미 사용 중인 아이디입니다..");
+
     } else {
-      AlertClass.showAlert("아이디 중복 확인", "이미 사용 중인 아이디입니다.");
+      AlertClass.showAlert("아이디 중복 확인", "사용 가능한 아이디입니다.");
+
     }
   }
 
-  // 아이디 중복 확인 로직을 수행하는 메서드
-  public boolean isIdUsing(String userId) {
 
-    return true; //임시
+  //닉네임 중복 확인
+  @FXML
+  public void isNameUsing(ActionEvent event) {
+    String userName = txtName.getText();
+    ArrayList<String> registerName = new ArrayList<>();
+    registerName.add("닉네임");
+    registerName.add(userName);
+
+    System.out.print(registerName);
+
+    Socket sock = MainClass.sock;
+
+    boolean isIdDuplication = registerService.registerCheckName(registerName, sock);
+    if (isIdDuplication) {
+      AlertClass.showAlert("닉네임 중복 확인", "이미 사용 중인 닉네임이다...");
+
+    } else {
+      AlertClass.showAlert("닉네임 중복 확인", "사용 가능한 닉네임입니다.");
+
+    }
   }
+
+
 
   //★★★★★★ID 찾기★★★★★★★
   @FXML
   public void searchIdBtnClicked(ActionEvent event) {
-    System.out.printf("★★★★★★ID 찾기★★★★★★★");
-
     // searchIdButton은 해당 버튼의 아이디입니다. 버튼을 누르면 해당 아이디로 버튼이 활성화되도록 설정해야 합니다.
     boolean searchIdButtonSelected = searchIdBtn.isSelected();
-
     if (searchIdButtonSelected) {
+      System.out.printf("★★★★★★ID 찾기★★★★★★★");
       String userName = txtNameForSearchId.getText();
       LocalDate birthDay = userBirthForSearchId.getValue();
 
       // 입력값 유효성 검사
-      if (userName.isEmpty() || birthDay == null) {
+      if (userName.isEmpty() || birthDay ==null) {
         AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
         return;
       }
+      // 로그인 정보를 담는 ArrayList 생성 (전송)
+      ArrayList<String> searchingId = new ArrayList<>();
+      searchingId.add("찾기");
+      searchingId.add(userName); // Status
+      searchingId.add(String.valueOf(birthDay));
 
-      System.out.println("사용자 이름: " + userName);
-      System.out.println("사용자 생일: " + birthDay);
+      System.out.print(searchingId);
 
+      Socket sock = MainClass.sock;
       // 아이디 찾기 서비스 호출하여 아이디 찾기 수행
-      searchIDService.searchId(userName, birthDay);
+      String result = searchIDService.searchId(searchingId, sock);
+
+      if (result.equals("없음") ) {
+        AlertClass.showAlert("아이디 찾기 실패", "일치하는 회원 정보가 없습니다.");
+      }else {
+        AlertClass.showAlert("아이디 찾기 성공", "회원님의 아이디는 " + result + " 입니다.");
+      }
     }
   }
 
@@ -230,21 +293,73 @@ public class Controller implements Initializable {
       String userId = txtId.getText();
       String userName = txtName.getText();
       LocalDate birthDay = userBirth.getValue();
-
       // 입력값 유효성 검사
       if (userId.isEmpty() || userName.isEmpty() || birthDay == null) {
         AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
         return;
       }
 
-      System.out.println("사용자 아이디: " + userId);
-      System.out.println("사용자 이름: " + userName);
-      System.out.println("사용자 생일: " + birthDay);
 
-      // 비밀번호 초기화 서비스 호출하여 비밀번호 초기화 수행
-      resetPwdService.resetPassword(userId, userName, birthDay);
+      ArrayList<String> resetPwd = new ArrayList<>();
+      resetPwd.add("초기화");
+      resetPwd.add(userId);
+      resetPwd.add(userName);
+      resetPwd.add(String.valueOf(birthDay));
+
+      System.out.print(resetPwd);
+
+      Socket sock = MainClass.sock;
+      boolean isUser =  resetPwdService.resetPassword(resetPwd, sock);
+
+      //응답
+      if (isUser) {
+        System.out.print("사용자 확인 성공!!!");
+
+        String newPwd = resetPasswordProcess(userId);
+        ArrayList<String> savePwd = new ArrayList<>();
+        savePwd.add("비밀번호초기화");
+        savePwd.add(userId);
+        savePwd.add(newPwd);
+
+        System.out.println(savePwd);
+
+        boolean isresettingPwd = resetPwdService.resetPassword(savePwd, sock);
+
+        //응답
+        if (isresettingPwd) {
+          System.out.printf("비밀번호 초기화 성공!");
+         // moveStartPage(); // 로그인 성공 시 다음 페이지로 이동
+        } else {
+          AlertClass.showAlert("초기화 실패", "초기화에 실패했습니다.");
+        }
+
+
+      } else {
+        AlertClass.showAlert("초기화 실패", "일치하는 사용자 정보가 없습니다.");
+      }
     }
   }
+
+
+  public static String resetPasswordProcess(String userId) {
+  // 새로운 비밀번호를 입력받습니다. 이 부분은 사용자 입력을 받는 화면을 구현하셔야 합니다.
+    TextInputDialog dialog = new TextInputDialog();
+    dialog.setTitle("비밀번호 초기화");
+    dialog.setHeaderText(null);
+    dialog.setContentText("새로운 비밀번호를 입력해주세요:");
+
+    Optional<String> result = dialog.showAndWait();
+
+    if (result.isPresent()) {
+      String newPassword = result.get();
+      System.out.println("새로운 비밀번호: " + newPassword);
+      AlertClass.showAlertInfo("비밀번호 초기화", "비밀번호가 초기화되었습니다.");
+      return newPassword;
+    } else {
+      return null; // 사용자가 취소한 경우 null 반환
+    }
+  }
+
 
 
   @FXML

@@ -43,7 +43,8 @@
                         <Label alignment="CENTER" prefHeight="19.0" prefWidth="274.0" text="비밀번호 확인" GridPane.rowIndex="4" />
                     </children>
                 </GridPane>
-                <ToggleButton fx:id="checkIdBtn" layoutX="424.0" layoutY="119.0" mnemonicParsing="false" onAction="#isIdUsing" text="아이디 중복확인" />
+                <ToggleButton fx:id="checkIdBtn" layoutX="434.0" layoutY="119.0" mnemonicParsing="false" onAction="#isIdUsing" text="아이디 중복확인" />
+            <ToggleButton fx:id="checkNameBtn" layoutX="434.0" layoutY="14.0" mnemonicParsing="false" onAction="#isNameUsing" text="닉네임 중복확인" />
             </children>
         </AnchorPane>
         <ToggleButton fx:id="backBtn" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#moveBackPage" prefHeight="43.0" prefWidth="148.0" text="Login 하러 가기" />
