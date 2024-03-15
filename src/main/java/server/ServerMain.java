@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ServerMain {
     public static ArrayList<Socket> users = new ArrayList<>();
-    public static boolean gameStatus = false;
+    public static ArrayList<String> gameStatus = new ArrayList<>();
     public static int turn = 0;
     public static int tryTurn = 0;
     public static int[] correctNum = new int[4];
@@ -32,14 +32,28 @@ public class ServerMain {
             users.add(user);
 
             if(users.size()==2) {
-                System.out.println("유저 2명 저장");
                 break;
             }
         }
 
+        // 게임 시작 조절
+        while(true){
+            if(gameStatus.size() == 2){
+                break;
+            }
+            else{
+                Thread.sleep(3000);
+            }
+        }
+
+        System.out.println("게임 시작 조절 끝...");
+
         /* 2 명이 접속한 상태, 게임 시작 전 카운트 다운 */
-        CountDownThread countUser1 = new CountDownThread(users.get(0));
-        CountDownThread countUser2 = new CountDownThread(users.get(1));
+        CountDownThread countUser1 = new CountDownThread((Socket)users.get(0));
+        CountDownThread countUser2 = new CountDownThread((Socket)users.get(1));
+        System.out.println(countUser2);
+        System.out.println(countUser1);
+        System.out.println("유저별 소켓 생성 완료");
         countUser1.start();
         countUser2.start();
 

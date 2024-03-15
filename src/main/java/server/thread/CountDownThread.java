@@ -22,8 +22,7 @@ public class CountDownThread extends Thread{
                     dos.writeUTF("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️" + i + "⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️");
                     Thread.sleep(1000);
                 }
-
-                dos.writeUTF("!!! 게임 시작 !!!");
+                dos.writeUTF("게임시작");
             }catch(Exception e){
                 e.printStackTrace();
             }

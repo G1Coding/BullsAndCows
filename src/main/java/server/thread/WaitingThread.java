@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import static server.ServerMain.gameStatus;
 import static server.ServerMain.users;
 
 public class WaitingThread extends Thread{
@@ -20,12 +21,15 @@ public class WaitingThread extends Thread{
             // 클라이언트가 1명만 접속되었을 경우
             while(true){
                 try {
-                    if(users.size() == 2) break;
+                    if(gameStatus.size() == 2) {
+                        break;
+                    }
 
                     OutputStream out = users.get(0).getOutputStream();
                     DataOutputStream dos = new DataOutputStream(out);
-                    dos.writeUTF("상대방 찾는 중....");
                     Thread.sleep(3000);
+                    System.out.println("상대방 찾는 중 보냄");
+
                 }catch (Exception e) {
                     e.printStackTrace();
                     System.out.println("WaitingThread 에서 문제 발생");

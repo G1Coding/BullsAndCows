@@ -88,6 +88,7 @@ public class TotalInputThread extends Thread{
                     } else if (option.equals("비밀번호초기화")) {
                         service.resetPwd(loginRegisterFindReset, user);
                     } else if (option.equals("게임시작")){
+                        gameStatus.add("게임시작");
                         WaitingThread waitingThread = new WaitingThread();
                     }
                 }

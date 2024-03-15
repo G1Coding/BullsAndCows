@@ -20,7 +20,6 @@ public class TurnThread extends Thread{
 
     @Override
     public void run() {
-        gameStatus = true;
         while(true){
 
             try {
