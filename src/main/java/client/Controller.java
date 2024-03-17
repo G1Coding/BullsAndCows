@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import static client.MainClass.gameStartSign;
 import static client.MainClass.sock;
 
 public class Controller implements Initializable {
@@ -498,40 +499,32 @@ public class Controller implements Initializable {
 
   @FXML
   public void moveIngamePage(ActionEvent event) throws IOException {
-
     System.out.println("★★★★★★게임 시작★★★★★★★");
 //    boolean startButtonSelected = startBtn.isSelected();
 //    if (startButtonSelected) {
     ArrayList<String> startSign = new ArrayList<>();
     startSign.add("게임시작");
 
-    String signResult = InGame.startGame(startSign, sock);
+    //InGame.startGame(startSign, sock);
+    // 로그인 서비스 호출하여 인증 수행
+    String twoUserStart = InGame.startGame(startSign, sock);
+    //응답
+    if (twoUserStart.equals("게임시작")) {
+      System.out.printf("게임 시작!!!");
+      // 로그인 성공 시 다음 페이지로 이동
+    }
+    if (twoUserStart.equals("상대방을 찾는 중...")){
+      AlertClass.showAlert("상대방을 기다리는 중", "상대방을 기다리는 중입니다.");
+    }
+    else {
+      System.out.printf("오류");
 
-    if (signResult.equals("게임시작")) {
-     // AlertClass.showAlert("게임시작", "게임을 시작합니다");
+    }
+  }
 
-      // 새 스테이지 추가
-      Stage newStage = new Stage();
-      Stage stage = (Stage) startBtn.getScene().getWindow();
-
-      try {
-        // 기존 스테이지 + 새 레이아웃
-        /* 새로만든 레이아웃을 기존 스테이지에 띄움 */
-        Parent second = FXMLLoader.load(getClass().getResource("ingame.fxml"));
-
-        // 씬에 레이아웃 추가
-        Scene sc = new Scene(second);
-        stage.setScene(sc);
-        stage.show();
-
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    } else {
 
 //     while(true){
 //       InputStream inputStream = sock.getInputStream();
-//
 //       DataInputStream dataInputStream = new DataInputStream(inputStream);
 //
 //
@@ -543,6 +536,4 @@ public class Controller implements Initializable {
 
     }
 //      AlertClass.showAlert("게임시작", "상대방을 찾는 중");
-    }
 
-  }

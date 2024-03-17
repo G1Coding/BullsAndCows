@@ -13,6 +13,7 @@ public class MainClass extends Application {
 
 
   public static Socket sock;
+  public static String gameStartSign = "sdjfsd";
 
   @Override
   public void start(Stage stage) throws IOException {
@@ -33,7 +34,7 @@ public class MainClass extends Application {
 
   }
   public static void main(String[] args) throws Exception {
-    sock = new Socket("192.168.0.23", 7979);
+    sock = new Socket("192.168.45.23", 7979);
     System.out.printf("소켓 연결 완료");
 
     launch(args);
