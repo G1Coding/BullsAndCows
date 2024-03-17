@@ -1,4 +1,6 @@
 package client;
+import client.message.AlertClass;
+import client.message.FieldValidation;
 import client.service.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

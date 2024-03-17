@@ -1,4 +1,6 @@
-package client;
+package client.message;
+
+import client.message.AlertClass;
 
 import java.time.LocalDate;
 

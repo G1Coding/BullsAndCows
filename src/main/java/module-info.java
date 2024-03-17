@@ -9,5 +9,7 @@ module BullsAndCows {
 
   opens client to javafx.fxml;
   exports client;
+  exports client.message;
+  opens client.message to javafx.fxml;
 
 }
