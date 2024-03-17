@@ -16,10 +16,8 @@ public class ResetPwdService {
 
   // 비밀번호 초기화 서비스를 수행하는 메서드
   public boolean resetPassword(ArrayList<String> resetPwd, Socket sock) {
-
     //회원 가입 성공 여부
     try {
-
       // 데이터를 주고받을 스트림 생성
       DataOutputStream outputStream = new DataOutputStream(sock.getOutputStream());
       DataInputStream inputStream = new DataInputStream(sock.getInputStream());

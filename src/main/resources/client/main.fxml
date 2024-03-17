@@ -12,13 +12,13 @@
    <children>
       <ImageView fitHeight="650.0" fitWidth="600.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../../../새 폴더/BullsAndCows/src/main/resources/images/main.jpg" />
+            <Image url="@../images/main.jpg" />
          </image>
       </ImageView>
       <ToggleButton fx:id="startBtn" layoutX="118.0" layoutY="461.0" mnemonicParsing="false" onAction="#moveIngamePage" prefHeight="74.0" prefWidth="314.0" text="게임 시작" />
       <ImageView fitHeight="232.0" fitWidth="224.0" layoutX="163.0" layoutY="150.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../새 폴더/BullsAndCows/src/main/resources/images/mainIcon.png" />
+            <Image url="@../images/mainIcon.png" />
          </image>
       </ImageView>
       <TextArea layoutX="129.0" layoutY="124.0" prefHeight="33.0" prefWidth="270.0" text="1~9까지의 숫자 4개를 입력하세요." />

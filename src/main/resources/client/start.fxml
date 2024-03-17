@@ -12,17 +12,17 @@
    <children>
       <ImageView fitHeight="650.0" fitWidth="1000.0" layoutX="-8.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../../../새 폴더/BullsAndCows/src/main/resources/images/start.jpg" />
+            <Image url="@../images/start.jpg" />
          </image>
       </ImageView>
       <ImageView fitHeight="90.0" fitWidth="182.0" layoutX="7.0" layoutY="8.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../../../새 폴더/BullsAndCows/src/main/resources/images/image.png" />
+            <Image url="@../images/image.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="371.0" fitWidth="287.0" layoutX="7.0" layoutY="233.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../../../새 폴더/BullsAndCows/src/main/resources/images/startman.png" />
+            <Image url="@../images/startman.png" />
          </image>
       </ImageView>
       <GridPane layoutX="290.0" layoutY="318.0" prefHeight="191.0" prefWidth="294.0">

@@ -1,14 +1,10 @@
 package client.service;
-
-import client.AlertClass;
 import client.MainClass;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class RegisterService {
@@ -52,11 +48,10 @@ public class RegisterService {
       return false; // 오류 발생 시 인증 실패로 처리
     }
   }
-  public boolean registerCheckID(ArrayList<String> checkIdData, Socket sock) {
-    // 아이디 중복 확인
-    //회원 가입 성공 여부
-    try {
 
+  //아이디 중복체크
+  public boolean registerCheckID(ArrayList<String> checkIdData, Socket sock) {
+    try {
       // 데이터를 주고받을 스트림 생성
       DataOutputStream outputStream = new DataOutputStream(sock.getOutputStream());
       DataInputStream inputStream = new DataInputStream(sock.getInputStream());
@@ -80,9 +75,9 @@ public class RegisterService {
       return false; // 오류 발생 시 인증 실패로 처리
     }
   }
+
+  //닉네임 중복체크
   public boolean registerCheckName(ArrayList<String> checkNameData, Socket sock) {
-    // 아이디 중복 확인
-    //회원 가입 성공 여부
     try {
 
       // 데이터를 주고받을 스트림 생성

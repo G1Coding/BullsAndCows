@@ -14,7 +14,7 @@
    <children>
       <ImageView fitHeight="650.0" fitWidth="1000.0" pickOnBounds="true">
          <image>
-            <Image url="@../../../../../../새 폴더/BullsAndCows/src/main/resources/images/resetpwd.jpg" />
+            <Image url="@../images/resetpwd.jpg" />
          </image>
       </ImageView>
       <VBox layoutX="19.0" layoutY="270.0" prefHeight="364.0" prefWidth="963.0">

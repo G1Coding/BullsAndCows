@@ -1,5 +1,4 @@
 package client;
-
 import client.service.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,19 +8,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.util.converter.IntegerStringConverter;
-
-import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-import static client.MainClass.gameStartSign;
 import static client.MainClass.sock;
 
 public class Controller implements Initializable {
@@ -29,16 +22,6 @@ public class Controller implements Initializable {
   private final RegisterService registerService = new RegisterService();
   private final ResetPwdService resetPwdService = new ResetPwdService();
   private final SearchIDService searchIDService = new SearchIDService();
-//  public Controller() {
-//    // 기본 생성자 내용 추가 (필요한 경우)
-//  }
-//
-//  //private Socket sock;
-//  // 생성자를 통해 소켓 전달
-//  public Controller(Socket sock) {
-//    this.sock = sock;
-//  }
-
 
   @FXML
   private ToggleButton loginBtn;
@@ -89,7 +72,6 @@ public class Controller implements Initializable {
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
-    // TODO Auto-generated method stub
   }
 
   //★★★★★★로그인 시작★★★★★★★
@@ -101,9 +83,8 @@ public class Controller implements Initializable {
     String password = txtPassword.getText();
 
     // 입력값 유효성 검사
-    if (userId.isEmpty() || password.isEmpty()) {
-      AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
-      return;
+    if (!FieldValidation.loginInput(userId, password)) {
+      return; // 유효하지 않은 입력값이 있으면 여기서 종료
     }
 
     System.out.println("사용자 아이디: " + userId);
@@ -142,11 +123,12 @@ public class Controller implements Initializable {
     String passwordRe = txtRePassword.getText();
     LocalDate birthDay = userBirth.getValue();
 
-    //입력값 유효성 검사
-    if (userName.isEmpty() || userId.isEmpty() || password.isEmpty() || passwordRe.isEmpty() || birthDay == null) {
-      AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
-      return;
+    // 입력값 유효성 검사
+    if (!FieldValidation.registerInput(userName, birthDay, userId, password, passwordRe)) {
+      return; // 유효하지 않은 입력값이 있으면 여기서 종료
     }
+
+
     System.out.println("사용자 이름: " + userName);
     System.out.println("사용자 아이디: " + userId);
     System.out.println("비밀번호: " + password);
@@ -262,10 +244,10 @@ public class Controller implements Initializable {
       LocalDate birthDay = userBirthForSearchId.getValue();
 
       // 입력값 유효성 검사
-      if (userName.isEmpty() || birthDay == null) {
-        AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
-        return;
+      if (!FieldValidation.researchIdInput(userName, birthDay)) {
+        return; // 유효하지 않은 입력값이 있으면 여기서 종료
       }
+
       // 로그인 정보를 담는 ArrayList 생성 (전송)
       ArrayList<String> searchingId = new ArrayList<>();
       searchingId.add("찾기");
@@ -298,12 +280,11 @@ public class Controller implements Initializable {
       String userId = txtId.getText();
       String userName = txtName.getText();
       LocalDate birthDay = userBirth.getValue();
-      // 입력값 유효성 검사
-      if (userId.isEmpty() || userName.isEmpty() || birthDay == null) {
-        AlertClass.showAlert("입력 오류", "모든 필드를 입력해주세요.");
-        return;
-      }
 
+      // 입력값 유효성 검사
+      if (!FieldValidation.resetPwdInput(userId, userName, birthDay)) {
+        return; // 유효하지 않은 입력값이 있으면 여기서 종료
+      }
 
       ArrayList<String> resetPwd = new ArrayList<>();
       resetPwd.add("초기화");
