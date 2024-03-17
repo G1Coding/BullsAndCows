@@ -37,6 +37,8 @@ public class ServerMain {
             }
         }
 
+        Thread.sleep(5000);
+
         // 게임 시작 조절
         while(true){
             if(gameStatus.size() == 2){
@@ -46,8 +48,6 @@ public class ServerMain {
                 Thread.sleep(3000);
             }
         }
-
-        System.out.println("게임 시작 조절 끝...");
 
         /* 2 명이 접속한 상태, 게임 시작 전 카운트 다운 */
         CountDownThread countUser1 = new CountDownThread((Socket)users.get(0));

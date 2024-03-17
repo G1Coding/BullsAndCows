@@ -44,6 +44,9 @@ public class WaitingThread extends Thread{
         try {
             out = user.getOutputStream();
             DataOutputStream dos = new DataOutputStream(out);
+            if(users.size() >= 1){
+             dos.writeUTF("게임시작");
+            }
             dos.writeUTF("상대방을 찾는 중...");
             System.out.println(users.indexOf(user) + " : 상대방을 찾는 중... 전송 완료");
         } catch (Exception e) {
