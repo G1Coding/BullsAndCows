@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.Image?>
@@ -10,6 +10,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="650.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="client.Controller">
    <children>
@@ -20,30 +22,60 @@
       </ImageView>
       <ScrollPane layoutX="623.0" layoutY="47.0" prefHeight="534.0" prefWidth="355.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="164.0" prefWidth="155.0">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="532.0" prefWidth="353.0">
                <children>
-                  <Label fx:id="resultResponse" layoutY="51.0" prefHeight="444.0" prefWidth="335.0" text="Label" />
+                  <Label fx:id="resultResponse" layoutY="51.0" prefHeight="444.0" prefWidth="355.0">
+                     <font>
+                        <Font size="19.0" />
+                     </font></Label>
                </children></AnchorPane>
         </content>
       </ScrollPane>
-      <AnchorPane layoutX="58.0" layoutY="61.0" prefHeight="438.0" prefWidth="478.0">
+      <AnchorPane layoutX="61.0" layoutY="101.0" prefHeight="438.0" prefWidth="478.0">
          <children>
             <VBox layoutX="134.0" layoutY="370.0" prefHeight="52.0" prefWidth="211.0" spacing="30.0">
                <children>
-                  <ToggleButton fx:id="sendNumBtn" mnemonicParsing="false" onAction="#sendNumBtnClicked" prefHeight="38.0" prefWidth="211.0" text="입력완료" />
-                  <ToggleButton fx:id="backBtn" mnemonicParsing="false" onAction="#moveBackPage" prefHeight="29.0" prefWidth="256.0" text="나가기" />
+                  <ToggleButton fx:id="sendNumBtn" mnemonicParsing="false" onAction="#sendNumBtnClicked" prefHeight="38.0" prefWidth="211.0" text="입력완료">
+                     <font>
+                        <Font size="22.0" />
+                     </font></ToggleButton>
+                  <ToggleButton fx:id="backBtn" mnemonicParsing="false" onAction="#moveBackPage" prefHeight="29.0" prefWidth="256.0" text="나가기">
+                     <font>
+                        <Font size="15.0" />
+                     </font></ToggleButton>
                </children>
             </VBox>
             <HBox layoutX="12.0" layoutY="204.0" prefHeight="88.0" prefWidth="456.0" spacing="20.0">
                <children>
-                  <TextField fx:id="num1" prefHeight="83.0" prefWidth="96.0" />
-                  <TextField fx:id="num2" prefHeight="83.0" prefWidth="96.0" />
-                  <TextField fx:id="num3" prefHeight="83.0" prefWidth="96.0" />
-                  <TextField fx:id="num4" prefHeight="83.0" prefWidth="96.0" />
+                  <TextField fx:id="num1" alignment="CENTER" prefHeight="83.0" prefWidth="96.0">
+                     <font>
+                        <Font size="50.0" />
+                     </font></TextField>
+                  <TextField fx:id="num2" alignment="CENTER" prefHeight="83.0" prefWidth="96.0">
+                     <font>
+                        <Font size="50.0" />
+                     </font></TextField>
+                  <TextField fx:id="num3" alignment="CENTER" prefHeight="83.0" prefWidth="96.0">
+                     <font>
+                        <Font size="50.0" />
+                     </font></TextField>
+                  <TextField fx:id="num4" alignment="CENTER" prefHeight="83.0" prefWidth="96.0">
+                     <font>
+                        <Font size="50.0" />
+                     </font></TextField>
                </children>
             </HBox>
-            <TextArea layoutX="68.0" layoutY="14.0" prefHeight="88.0" prefWidth="328.0" text="1부터 9사이의 숫자 4개를 입력하세요&#10;(중복 되는 수는 안됨)" />
+            <Text fill="WHITE" layoutX="102.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(중복 되는 수는 안됨)">
+               <font>
+                  <Font size="29.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
+      <Button layoutX="72.0" layoutY="47.0" lineSpacing="20.0" mnemonicParsing="false" prefHeight="82.0" prefWidth="456.0" text="1부터 9사이의 숫자 4개를 입력하세요">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import static client.MainClass.sock;
@@ -393,33 +394,39 @@ public class Controller implements Initializable {
 //      System.out.println("서버로부터 '오류' 응답 받음");
 //    }
 
-   // String[] operationResult = SendNumToServer.ResultNumber(sendNum);
+    // String[] operationResult = SendNumToServer.ResultNumber(sendNum);
     Socket sock = MainClass.sock;
 
     ArrayList<String> operationResult = SendNumToServer.ResultNumber(sendNum, sock);
-    String[] resultArray = operationResult.toArray(new String[0]); // ArrayList를 String[]로 변환
+//    String[] resultArray = operationResult.toArray(new String[0]); // ArrayList를 String[]로 변환
 
-    for (String response : resultArray) {
-      updateResponseLabel(new String[]{response});
+    if (operationResult.get(0).equals("턴아님")) {
+      System.out.println("턴 아님");
+      AlertClass.showAlert("턴 아님", "본인 차례가 아닙니다.");
+    } else {
+
+      Platform.runLater(() -> {
+        resultResponse.setText("\n시도 숫자 = " + sendNum.toString() + "\n");
+      });
+
+      updateResponseLabel(sendNum, operationResult); // 응답을 전달
       System.out.println();
       try {
         Thread.sleep(1000); // 1초간 대기
       } catch (InterruptedException e) {
-        e.printStackTrace();
+        System.out.println(operationResult);
       }
+
     }
   }
 
-  // 레이블에 새로운 텍스트를 추가하는 메소드
-  private void updateResponseLabel(String[] newTexts) {
-    Platform.runLater(() -> {
-      for (String newText : newTexts) {
-        resultResponse.setText(resultResponse.getText() + "\n" + newText); // 새로운 텍스트를 줄바꿈하여 이어붙임
-      }
-    });
-  }
-
-
+// 레이블에 새로운 텍스트를 추가하는 메소드
+    private void updateResponseLabel (ArrayList < Integer > sendNum, ArrayList<String> response){
+      Platform.runLater(() -> {
+        // 새로운 텍스트를 만들어서 레이블에 추가
+        resultResponse.setText(resultResponse.getText()  + "시도 횟수 = " +  response.get(0)  + "\n" + "스트라이크 = "  + response.get(1) +  "\n" + "볼 = " + response.get(2) + "\n" + "아웃 = " + response.get(3));
+      });
+    }
 
   //숫자 게임 중복 값 체크
   public boolean checkNum(ArrayList<Integer> checkNum) {
