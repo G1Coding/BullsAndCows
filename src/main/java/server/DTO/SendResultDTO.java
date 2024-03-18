@@ -3,39 +3,46 @@ package server.DTO;
 import java.io.Serializable;
 
 public class SendResultDTO implements Serializable {
-    private int tryTurn, strike, ball, out;
-    private String userName, sendNum;
+    String tryTurn, num1, num2, num3, num4, userName, strike, ball, out;
 
-    public int getTryTurn() {
+    public String getTryTurn() {
         return tryTurn;
     }
 
-    public void setTryTurn(int tryTurn) {
+    public void setTryTurn(String tryTurn) {
         this.tryTurn = tryTurn;
     }
 
-    public int getStrike() {
-        return strike;
+    public String getNum1() {
+        return num1;
     }
 
-    public void setStrike(int strike) {
-        this.strike = strike;
+    public void setNum1(String num1) {
+        this.num1 = num1;
     }
 
-    public int getBall() {
-        return ball;
+    public String getNum2() {
+        return num2;
     }
 
-    public void setBall(int ball) {
-        this.ball = ball;
+    public void setNum2(String num2) {
+        this.num2 = num2;
     }
 
-    public int getOut() {
-        return out;
+    public String getNum3() {
+        return num3;
     }
 
-    public void setOut(int out) {
-        this.out = out;
+    public void setNum3(String num3) {
+        this.num3 = num3;
+    }
+
+    public String getNum4() {
+        return num4;
+    }
+
+    public void setNum4(String num4) {
+        this.num4 = num4;
     }
 
     public String getUserName() {
@@ -46,11 +53,27 @@ public class SendResultDTO implements Serializable {
         this.userName = userName;
     }
 
-    public String getSendNum() {
-        return sendNum;
+    public String getStrike() {
+        return strike;
     }
 
-    public void setSendNum(String sendNum) {
-        this.sendNum = sendNum;
+    public void setStrike(String strike) {
+        this.strike = strike;
+    }
+
+    public String getBall() {
+        return ball;
+    }
+
+    public void setBall(String ball) {
+        this.ball = ball;
+    }
+
+    public String getOut() {
+        return out;
+    }
+
+    public void setOut(String out) {
+        this.out = out;
     }
 }

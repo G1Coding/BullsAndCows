@@ -24,6 +24,10 @@ public class MainService {
                 if(mkCorrectNum[i] == mkCorrectNum[j]) i--;
             }
         }
+        System.out.println(mkCorrectNum[0]);
+        System.out.println(mkCorrectNum[1]);
+        System.out.println(mkCorrectNum[2]);
+        System.out.println(mkCorrectNum[3]);
         ServerMain.correctNum = mkCorrectNum;
     }
 
@@ -81,21 +85,44 @@ public class MainService {
         DAO.saveReceiveResult(receiveResultDTO);
     }
 
-    public void sendResult(int tryTurn, String userName, ArrayList<Integer> receiveNum, ArrayList<Integer> strikeBallOut){
+    public void sendResult(int tryTurn, String userName, ArrayList<Integer> receiveNum, ArrayList<Integer> strikeBallOut, Socket user){
         String sendNum = "" + receiveNum.get(0) + receiveNum.get(1) + receiveNum.get(2) + receiveNum.get(3);
-        SendResultDTO sendResultDTO = new SendResultDTO();
-        sendResultDTO.setTryTurn(tryTurn);
-        sendResultDTO.setUserName(userName);
-        sendResultDTO.setSendNum(sendNum);
-        sendResultDTO.setStrike(strikeBallOut.get(0));
-        sendResultDTO.setBall(strikeBallOut.get(1));
-        sendResultDTO.setOut(strikeBallOut.get(2));
+//        SendResultDTO sendResultDTO = new SendResultDTO();
+//        sendResultDTO.setTryTurn(tryTurn);
+//        sendResultDTO.setUserName(userName);
+//        sendResultDTO.setSendNum(sendNum);
+//        sendResultDTO.setStrike(strikeBallOut.get(0));
+//        sendResultDTO.setBall(strikeBallOut.get(1));
+//        sendResultDTO.setOut(strikeBallOut.get(2));
+
+
+//        ArrayList<String> sendResultDTO = new ArrayList<>();
+//        sendResultDTO.add("" + tryTurn);
+//        sendResultDTO.add("" + receiveNum.get(0));
+//        sendResultDTO.add("" + receiveNum.get(1));
+//        sendResultDTO.add("" + receiveNum.get(2));
+//        sendResultDTO.add("" + receiveNum.get(3));
+//        sendResultDTO.add(userName);
+//        sendResultDTO.add("" +strikeBallOut.get(0));
+//        sendResultDTO.add("" +strikeBallOut.get(1));
+//        sendResultDTO.add("" +strikeBallOut.get(2));
+
+
+        String tryTurn_ = tryTurn + "";
+        String strike_ = strikeBallOut.get(0) + "";
+        String ball_ = strikeBallOut.get(1) + "";
+        String out_ = strikeBallOut.get(2) + "";
+
+        ArrayList<String> resultMsg = new ArrayList<>();
+        resultMsg.add(tryTurn_);
+        resultMsg.add(strike_);
+        resultMsg.add(ball_);
+        resultMsg.add(out_);
+
 
         try {
-            for(Socket user : users) {
-                ObjectOutputStream oos = new ObjectOutputStream(user.getOutputStream());
-                oos.writeObject(sendResultDTO);
-            }
+            ObjectOutputStream oos = new ObjectOutputStream(user.getOutputStream());
+            oos.writeObject(resultMsg);
             System.out.println("MainService - sendResult 메소드에서 결과 정보 담긴 객체 전송 완료");
         } catch (Exception e) {
             System.out.println("MainService 의 sendResult 메소드에서 오류 발생");;

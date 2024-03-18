@@ -25,15 +25,15 @@ public class TurnThread extends Thread{
             try {
                 turn = 1;
                 System.out.println("1설정");
-                for(Socket user : users){
-                    this.user = user;
-                    out = user.getOutputStream();
-                    dos = new DataOutputStream(out);
-                    String user1ip = users.get(0).getInetAddress().toString().replaceAll("/", "");
-                    ServerDAO dao = new ServerDAO();
-                    String user1 = dao.getInetAddress(user1ip);
-                    dos.writeUTF( user1 + "님 차례");
-                }
+//                for(Socket user : users){
+//                    this.user = user;
+//                    out = user.getOutputStream();
+//                    dos = new DataOutputStream(out);
+//                    String user1ip = users.get(0).getInetAddress().toString().replaceAll("/", "");
+//                    ServerDAO dao = new ServerDAO();
+//                    String user1 = dao.getInetAddress(user1ip);
+//                    dos.writeUTF( user1 + "님 차례");
+//                }
                 for(int i=1; i<=30; i++){
                     if(turn == 2){
                         break;
@@ -43,15 +43,15 @@ public class TurnThread extends Thread{
 
                 turn = 2;
                 System.out.println("2설정");
-                for(Socket user : users){
-                    this.user = user;
-                    out = user.getOutputStream();
-                    dos = new DataOutputStream(out);
-                    String user2ip = users.get(1).getInetAddress().toString().replaceAll("/", "");
-                    ServerDAO dao = new ServerDAO();
-                    String user2 = dao.getInetAddress(user2ip);
-                    dos.writeUTF( user2 + "님 차례");
-                }
+//                for(Socket user : users){
+//                    this.user = user;
+//                    out = user.getOutputStream();
+//                    dos = new DataOutputStream(out);
+//                    String user2ip = users.get(1).getInetAddress().toString().replaceAll("/", "");
+//                    ServerDAO dao = new ServerDAO();
+//                    String user2 = dao.getInetAddress(user2ip);
+//                    dos.writeUTF( user2 + "님 차례");
+//                }
 
                 for(int i=1; i<=30; i++){
                     if(turn == 1){

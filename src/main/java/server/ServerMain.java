@@ -49,18 +49,12 @@ public class ServerMain {
             }
         }
 
-        /* 2 명이 접속한 상태, 게임 시작 전 카운트 다운 */
-        CountDownThread countUser1 = new CountDownThread((Socket)users.get(0));
-        CountDownThread countUser2 = new CountDownThread((Socket)users.get(1));
-        countUser1.start();
-        countUser2.start();
-
         // 난수 생성 메소드
         MainService service = new MainService();
         service.mkCorrectNum();
 
         // 카운트 다운 시간초 6초 대기 후 턴 시작
-        Thread.sleep(6000);
+//        Thread.sleep(1000);
 
         TurnThread turn = new TurnThread();
 

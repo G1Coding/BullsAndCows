@@ -4,11 +4,7 @@ import server.ServerMain;
 import server.service.LoginRegisterFindResetService;
 import server.service.MainService;
 
-import java.io.DataInputStream;
-import java.io.ObjectInputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -36,6 +32,7 @@ public class TotalInputThread extends Thread{
                 // @@@@@@@@@@@@@@@@@@@@@@@@@@@@ test 용 데이터 출력 @@@@@@@@@@@@@@@@@@@@@@@@@@@@@
                 System.out.println(data);
 
+
                 Object firstElemnt = ((ArrayList<?>)data).get(0);
 
                 // ArrayList 일 경우
@@ -43,6 +40,8 @@ public class TotalInputThread extends Thread{
                     // 정답 추측 숫자를 담은 ArrayList 넘어옴
                     ArrayList<Integer> receiveNum = (ArrayList<Integer>) data;
                     if(turn == users.indexOf(user)+1) {
+                        System.out.println(receiveNum);
+
                         MainService service = new MainService();
 
                         // Strike, Ball, Out 카운트 체크 후 객체에 담음
@@ -58,7 +57,7 @@ public class TotalInputThread extends Thread{
                         service.saveReceiveResult(receiveNum, strikeBallOut, userName, tryTurn);
 
                         // 다시 클라이언트에게 n번째 도전, 닉네임, 도전한 수(xxxx), 스트라이크, 볼, 아웃 을 전송
-                        service.sendResult(tryTurn, userName, receiveNum, strikeBallOut);
+                        service.sendResult(tryTurn, userName, receiveNum, strikeBallOut, user);
 
                         // 턴을 상대 턴으로 조정
                         if(turn == 1){
@@ -66,6 +65,22 @@ public class TotalInputThread extends Thread{
                         } else if (turn == 2) {
                             turn = 1;
                         }
+                    } else if (turn == 0) {
+                        OutputStream os = user.getOutputStream();
+                        ObjectOutputStream oos = new ObjectOutputStream(os);
+
+                        ArrayList<String> noUser = new ArrayList<>();
+                        noUser.add("상대가 입장하지 않았습니다.");
+
+                        oos.writeObject(noUser);
+                    } else{
+                        OutputStream os = user.getOutputStream();
+                        ObjectOutputStream oos = new ObjectOutputStream(os);
+
+                        ArrayList<String> noTurn = new ArrayList<>();
+                        noTurn.add("턴아님");
+
+                        oos.writeObject(noTurn);
                     }
                 } else if (firstElemnt instanceof  String) {
                     LoginRegisterFindResetService service = new LoginRegisterFindResetService();
