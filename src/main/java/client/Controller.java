@@ -390,7 +390,7 @@ public class Controller implements Initializable {
                 resultResponse.setText("\n시도 숫자 = " + sendNum.toString() + "\n");
             });
 
-            updateResponseLabel(sendNum, operationResult); // 응답을 전달
+            updateResponseLabel(operationResult); // 응답을 전달
             System.out.println();
             try {
                 Thread.sleep(1000); // 1초간 대기
@@ -402,7 +402,7 @@ public class Controller implements Initializable {
     }
 
     // 레이블에 새로운 텍스트를 추가하는 메소드
-    private void updateResponseLabel(ArrayList<Integer> sendNum, ArrayList<String> response) {
+    private void updateResponseLabel(ArrayList<String> response) {
         Platform.runLater(() -> {
             // 새로운 텍스트를 만들어서 레이블에 추가
             resultResponse.setText(resultResponse.getText() + "시도 횟수 = " + response.get(0) + "\n" + "스트라이크 = " + response.get(1) + "\n" + "볼 = " + response.get(2) + "\n" + "아웃 = " + response.get(3));
