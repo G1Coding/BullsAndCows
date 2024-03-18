@@ -2,6 +2,7 @@ package client;
 import client.message.AlertClass;
 import client.message.FieldValidation;
 import client.service.*;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -70,7 +71,11 @@ public class Controller implements Initializable {
   @FXML
   private TextField num4;
 
-  @FXML Label serverResponse;
+  @FXML
+  Label serverResponse;
+  @FXML
+  Label resultResponse;
+
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
@@ -350,7 +355,7 @@ public class Controller implements Initializable {
 
 
   @FXML
-  public void sendNumBtnClicked(ActionEvent event) {
+  public void sendNumBtnClicked(ActionEvent event) throws IOException {
     // Implement sending the numbers to the server here
 
     // 입력값 유효성 검사
@@ -377,14 +382,50 @@ public class Controller implements Initializable {
     }
 
     System.out.println(sendNum);
+
+
+//    String operationResult = SendNumToServer.ResultNumber(sendNum, sock);
+
+//    if (!"오류".equals(operationResult)) {
+//      System.out.println(operationResult);
+//      resultResponse.setText(operationResult);
+//    } else {
+//      System.out.println("서버로부터 '오류' 응답 받음");
+//    }
+
+   // String[] operationResult = SendNumToServer.ResultNumber(sendNum);
+    Socket sock = MainClass.sock;
+
+    ArrayList<String> operationResult = SendNumToServer.ResultNumber(sendNum, sock);
+    String[] resultArray = operationResult.toArray(new String[0]); // ArrayList를 String[]로 변환
+
+    for (String response : resultArray) {
+      updateResponseLabel(new String[]{response});
+      System.out.println();
+      try {
+        Thread.sleep(1000); // 1초간 대기
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    }
   }
+
+  // 레이블에 새로운 텍스트를 추가하는 메소드
+  private void updateResponseLabel(String[] newTexts) {
+    Platform.runLater(() -> {
+      for (String newText : newTexts) {
+        resultResponse.setText(resultResponse.getText() + "\n" + newText); // 새로운 텍스트를 줄바꿈하여 이어붙임
+      }
+    });
+  }
+
 
 
   //숫자 게임 중복 값 체크
   public boolean checkNum(ArrayList<Integer> checkNum) {
 
     for (int i = 0; i <= checkNum.size(); i++) {
-      for (int j = i + 1; i < checkNum.size(); j++) {
+      for (int j = i + 1; j < checkNum.size(); j++) {
         if (checkNum.get(i).equals(checkNum.get(j)))
           return false;
       }
@@ -495,28 +536,30 @@ public class Controller implements Initializable {
     if (twoUserStart.equals("게임시작")) {
       System.out.printf("게임 시작!!!");
       // 로그인 성공 시 다음 페이지로 이동
+
     }
-    if (twoUserStart.equals("상대방을 찾는 중...")){
+    if (twoUserStart.equals("상대방을 찾는 중...")) {
       AlertClass.showAlert("상대방을 기다리는 중", "상대방을 기다리는 중입니다.");
-    }
-    else {
+
+      Stage stage = new Stage();
+
+      try {
+        // 기존 스테이지 + 새 레이아웃
+        /* 새로만든 레이아웃을 기존 스테이지에 띄움 */
+        Parent second = FXMLLoader.load(getClass().getResource("ingame.fxml"));
+
+        // 씬에 레이아웃 추가
+        Scene sc = new Scene(second);
+        stage.setScene(sc);
+        stage.show();
+
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+    } else {
       System.out.printf("오류");
 
     }
   }
-
-
-//     while(true){
-//       InputStream inputStream = sock.getInputStream();
-//       DataInputStream dataInputStream = new DataInputStream(inputStream);
-//
-//
-//       String signResult2 = dataInputStream.readUTF();
-//
-//
-//       serverResponse.setText(signResult2);
-//     }
-
-    }
-//      AlertClass.showAlert("게임시작", "상대방을 찾는 중");
-
+}

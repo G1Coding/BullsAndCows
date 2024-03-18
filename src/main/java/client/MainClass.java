@@ -34,7 +34,7 @@ public class MainClass extends Application {
 
   }
   public static void main(String[] args) throws Exception {
-    sock = new Socket("192.168.45.23", 7979);
+    sock = new Socket("192.168.42.118", 7979);
     System.out.printf("소켓 연결 완료");
 
     launch(args);
